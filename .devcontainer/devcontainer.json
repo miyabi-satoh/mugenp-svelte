@@ -7,7 +7,7 @@
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"customizations": {
 		"vscode": {
-			"extensions": ["ms-azuretools.vscode-docker", "svelte.svelte-vscode"]
+			"extensions": []
 		}
 	},
 
