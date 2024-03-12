@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind variants;
+
+@font-face {
+	/* Reference name */
+	font-family: 'MPLUSRounded1c';
+	/* For multiple files use commas, ex: url(), url(), ... */
+	src: url('/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Regular.ttf');
+}
+
+@font-face {
+	/* Reference name */
+	font-family: 'MPLUSRounded1c-Bold';
+	/* For multiple files use commas, ex: url(), url(), ... */
+	src: url('/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Bold.ttf');
+}
+
+@media screen {
+	html,
+	body {
+		@apply h-full overflow-hidden;
+	}
+}
+
+@layer utilities {
+	.font-bold {
+		font-family: 'MPLUSRounded1c-Bold', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN', sans-serif;
+	}
+}
+
+:root [data-theme='skeleton'] {
+	--theme-rounded-base: 6px;
+	--theme-font-family-base: 'MPLUSRounded1c', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN',
+		sans-serif;
+	--theme-font-family-heading: 'MPLUSRounded1c', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN',
+		sans-serif;
+}
