@@ -1,2 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { pages } from '$lib/pages';
+
+	$: filterdPages = pages;
+</script>
+
+{#each filterdPages as page (page.id)}
+	<div>
+		<div>{page.chapter}</div>
+		<div>{page.section}</div>
+		<div>{page.subsection}</div>
+		<div>{page.title}</div>
+	</div>
+{/each}

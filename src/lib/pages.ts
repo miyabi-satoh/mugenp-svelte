@@ -1,0 +1,442 @@
+export const pages = [
+	{
+		id: '71111',
+		module: 'fugou',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数',
+		subsection: '０より小さい数',
+		title: '正の符号・負の符号',
+		message: '次の数について、正の符号または負の符号をつけて表しなさい。'
+	},
+	{
+		id: '71121',
+		module: 'hantai',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数',
+		subsection: '正の数・負の数で量を表す',
+		title: '反対の性質を持つ量',
+		message: '[　]内の言葉を使って、次のことを表しなさい。'
+	},
+	{
+		id: '71122',
+		module: 'kijun',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数',
+		subsection: '正の数・負の数で量を表す',
+		title: '基準からの増減や過不足',
+		message: '次の問いに答えなさい。'
+	},
+	{
+		id: '71131',
+		module: 'daisyou',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数',
+		subsection: '絶対値と数の大小',
+		title: '正の数・負の数の大小',
+		message: '次の各組の数の大小を、不等号(＜)を使って表しなさい。'
+	},
+	{
+		id: '71211',
+		module: 'kahou_kihon',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の加法，減法',
+		title: '加法の基本',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71212',
+		module: 'genpou_kihon',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の加法，減法',
+		title: '減法の基本',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71213',
+		module: 'kagen_mix',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の加法，減法',
+		title: '加法・減法ミックス',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71214',
+		module: 'kakko_nasi',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の加法，減法',
+		title: 'カッコのない加減法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71215',
+		module: 'kagen_kongou',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の加法，減法',
+		title: '加減混合計算',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71221',
+		module: 'jyouhou',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の乗法，除法',
+		title: '正の数・負の数の乗法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71222',
+		module: 'jyohou',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の乗法，除法',
+		title: '正の数・負の数の除法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71223',
+		module: 'bunsuu_mul',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の乗法，除法',
+		title: '分数を含む乗法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71224',
+		module: 'bunsuu_div',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の乗法，除法',
+		title: '分数を含む除法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71225',
+		module: 'mul_div_mix',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: '正の数・負の数の乗法，除法',
+		title: '乗除混合計算',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71231',
+		module: 'sisuu',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: 'いろいろな計算',
+		title: '指数',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71232',
+		module: 'sisoku_kongou',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: 'いろいろな計算',
+		title: '四則混合',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '71233',
+		module: 'sisoku_kongou_sisuu',
+		grade: '中1',
+		chapter: '正の数・負の数',
+		section: '正の数・負の数の計算',
+		subsection: 'いろいろな計算',
+		title: '四則混合と指数',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81111',
+		module: 'kou_jisuu',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: '式の加法，減法',
+		title: '単項式・多項式・次数',
+		message: '次の式が単項式ならば次数を、多項式ならば項と次数を答えなさい。'
+	},
+	{
+		id: '81112',
+		module: 'douruikou_no_seiri',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: '式の加法，減法',
+		title: '同類項の整理',
+		message: '次の式の同類項をまとめて簡単にしなさい。'
+	},
+	{
+		id: '81113',
+		module: 'kahou_genpou',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: '式の加法，減法',
+		title: '多項式の加法，減法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81121',
+		module: 'poly_num_mul',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: 'いろいろな多項式の計算',
+		title: '多項式と数の乗法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81122',
+		module: 'poly_num_div',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: 'いろいろな多項式の計算',
+		title: '多項式と数の除法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81123',
+		module: 'bunpai_kagen',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: 'いろいろな多項式の計算',
+		title: '整数×多項式と加減法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81124',
+		module: 'bunsuu_bunpai_kagen',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: 'いろいろな多項式の計算',
+		title: '分数×多項式と加減法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81125',
+		module: 'bunsuukei_kagen',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: 'いろいろな多項式の計算',
+		title: '分数形の式と加減法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81131',
+		module: 'mono_mono_mul',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: '単項式の乗法，除法',
+		title: '単項式の乗法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81132',
+		module: 'mono_mono_div',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: '単項式の乗法，除法',
+		title: '単項式の除法',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81133',
+		module: 'mul_div_mix',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '式の計算',
+		subsection: '単項式の乗法，除法',
+		title: '乗除混合計算',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '81211',
+		module: 'tousiki_henkei',
+		grade: '中2',
+		chapter: '式の計算',
+		section: '文字式の利用',
+		subsection: '文字式の利用',
+		title: '等式変形',
+		message: '次の等式を[　]内の文字について解きなさい。'
+	},
+	{
+		id: '91111',
+		module: 'poly_mono_mul',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '式の乗法・除法',
+		title: '\\( (a+b)\\times c \\) の計算',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '91112',
+		module: 'poly_mono_div',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '式の乗法・除法',
+		title: '\\( (a+b)\\div c \\) の計算',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '91113',
+		module: 'poly_poly_mul',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '式の乗法・除法',
+		title: '\\( (a+b)(c+d) \\) の展開',
+		message: '次の式を展開しなさい。'
+	},
+	{
+		id: '91121',
+		module: 'waseki_no_kousiki',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '乗法の公式',
+		title: '\\((x+a)(x+b)\\) の展開',
+		message: '次の式を展開しなさい。'
+	},
+	{
+		id: '91122',
+		module: 'heihou_kousiki',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '乗法の公式',
+		title: '\\((a\\pm b)^2\\) の展開',
+		message: '次の式を展開しなさい。'
+	},
+	{
+		id: '91123',
+		module: 'wa_to_sa_no_seki',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '乗法の公式',
+		title: '\\((a + b)(a - b)\\) の展開',
+		message: '次の式を展開しなさい。'
+	},
+	{
+		id: '91124',
+		module: 'jyouhou_kousiki',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '乗法の公式',
+		title: '乗法公式ミックス',
+		message: '次の式を展開しなさい。'
+	},
+	{
+		id: '91125',
+		module: 'tenkai_to_seiri',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '乗法の公式',
+		title: '展開と整理',
+		message: '次の計算をしなさい。'
+	},
+	{
+		id: '91131',
+		module: 'kyoutuu_bunkai',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '因数分解',
+		title: '共通因数でくくる',
+		message: '次の式を因数分解しなさい。'
+	},
+	{
+		id: '91132',
+		module: 'wa_to_sa_no_bunkai',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '因数分解',
+		title: '\\( a^2 - b^2 \\) の因数分解',
+		message: '次の式を因数分解しなさい。'
+	},
+	{
+		id: '91133',
+		module: 'heihou_bunkai',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '因数分解',
+		title: '\\( a^2 \\pm 2ab +b^2 \\) の因数分解',
+		message: '次の式を因数分解しなさい。'
+	},
+	{
+		id: '91134',
+		module: 'waseki_no_bunkai',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '因数分解',
+		title: '\\(x^2 + (a+b)x +ab \\) の因数分解',
+		message: '次の式を因数分解しなさい。'
+	},
+	{
+		id: '91135',
+		module: 'insuu_bunkai',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '因数分解',
+		title: '因数分解ミックス',
+		message: '次の式を因数分解しなさい。'
+	},
+	{
+		id: '91136',
+		module: 'kyoutuu_kousiki',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の展開と因数分解',
+		subsection: '因数分解',
+		title: '2段階の因数分解',
+		message: '次の式を因数分解しなさい。'
+	},
+	{
+		id: '91211',
+		module: 'kazu_no_keisan',
+		grade: '中3',
+		chapter: '式の展開と因数分解',
+		section: '式の計算の利用',
+		subsection: '式の計算の利用',
+		title: '数の計算への利用',
+		message: '乗法公式や因数分解を利用して次の計算をしなさい。'
+	}
+];
