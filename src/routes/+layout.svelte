@@ -39,7 +39,7 @@
 		</div>
 	</svelte:fragment>
 
-	<div class="container max-w-3xl mx-auto p-4 sm:p-10">
+	<div class="container max-w-3xl mx-auto p-4 lg:px-0">
 		<slot />
 	</div>
 
