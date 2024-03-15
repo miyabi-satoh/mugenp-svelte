@@ -1,28 +1,23 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import type { Category } from '$lib/schemas/zod';
-	import { superForm } from 'sveltekit-superforms';
-	import type { PageData } from './$types';
-	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
 	import { getModalStore } from '@skeletonlabs/skeleton';
+	import type { PageData } from './$types';
 	import ModalExampleForm from './Form.svelte';
 
 	const modalStore = getModalStore();
 	export let data: PageData;
-	// const { form, message, constraints, errors, enhance } = superForm(data.form);
 
 	let subjectId = data.subjectId ?? '';
 	let gradeId = data.gradeId ?? '';
 
-	// console.dir(data);
-	function modalComponentForm(): void {
+	function modalComponentForm(category: Category | null = null): void {
 		const c: ModalComponent = { ref: ModalExampleForm };
 		const modal: ModalSettings = {
 			type: 'component',
 			component: c,
-			meta: { data },
-			response: (r) => console.log('response:', r)
+			meta: { data, category }
 		};
 		modalStore.trigger(modal);
 	}
@@ -35,18 +30,6 @@
 		} else {
 			goto(`/admin/category`);
 		}
-	}
-
-	function handleClickEdit(category: Category) {
-		// $form.id = category.id;
-		// $form.slug = category.slug;
-		// $form.title = category.title;
-	}
-
-	function handleClickCancel() {
-		// $form.id = undefined;
-		// $form.slug = '';
-		// $form.title = '';
 	}
 </script>
 
@@ -86,73 +69,30 @@
 				{/if}
 			{/each}
 		</div>
-		<div class="grid grid-cols-2 gap-4">
-			<div>
-				<div class="flex justify-between items-center">
-					<div class="text-xl font-bold">Sub categories</div>
-					<button class="btn variant-filled-secondary" on:click={modalComponentForm}>Add</button>
-				</div>
-				<div
-					class="mt-1 rounded-token border-token border-surface-400-500-token bg-surface-200-700-token"
+		<div>
+			<div class="flex justify-between items-center">
+				<div class="text-xl font-bold">Sub categories</div>
+				<button class="btn variant-filled-secondary" on:click={() => modalComponentForm()}
+					>Add</button
 				>
-					{#if data.category.children.length > 0}
-						{#each data.category.children as category (category.id)}
-							<div class="p-4 flex justify-between">
-								<a class="anchor" href="/admin/{category.id}">
-									{category.title}
-									<span class="text-sm opacity-50">({category.slug})</span>
-								</a>
-								<button on:click={() => handleClickEdit(category)}>編集</button>
-							</div>
-						{/each}
-					{:else}
-						<div class="p-4 flex justify-between">No categories.</div>
-					{/if}
-				</div>
 			</div>
-
-			<!-- <form method="post" class="space-y-4" use:enhance>
-				<div class="text-xl font-bold">
-					{$form.id ? 'Edit' : 'Add sub'} category {$form.id ?? ''}
-				</div>
-
-				<div>
-					<label class="label">
-						<span>Slug</span>
-						<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
-							<div class="input-group-shim">
-								{data.paths[data.paths.length - 1].path}/
-							</div>
-							<input name="slug" bind:value={$form.slug} {...$constraints.slug} />
+			<div
+				class="mt-1 rounded-token border-token border-surface-400-500-token bg-surface-200-700-token"
+			>
+				{#if data.category.children.length > 0}
+					{#each data.category.children as category (category.id)}
+						<div class="p-4 flex justify-between">
+							<a class="anchor" href="/admin/{category.id}">
+								{category.title}
+								<span class="text-sm opacity-50">({category.slug})</span>
+							</a>
+							<button on:click={() => modalComponentForm(category)}>編集</button>
 						</div>
-					</label>
-					{#if $errors.slug}
-						<span class="alert variant-filled-error">{$errors.slug}</span>
-					{/if}
-				</div>
-
-				<div>
-					<label class="label">
-						<span>Title</span>
-						<input class="input" name="title" bind:value={$form.title} {...$constraints.title} />
-					</label>
-					{#if $errors.title}
-						<span class="alert variant-filled-error">{$errors.title}</span>
-					{/if}
-				</div>
-
-				<button class="btn variant-filled-primary">Submit</button>
-				{#if $form.id}
-					<button class="btn variant-filled" type="button" on:click={handleClickCancel}
-						>Cancel</button
-					>
+					{/each}
+				{:else}
+					<div class="p-4 flex justify-between">No categories.</div>
 				{/if}
-				{#if $message}
-					<p>{$message}</p>
-				{/if}
-				<input type="hidden" name="id" value={$form.id ?? ''} />
-				<input type="hidden" name="parentId" value={data.category.id} />
-			</form> -->
+			</div>
 		</div>
 	{/if}
 </div>
