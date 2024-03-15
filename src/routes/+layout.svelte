@@ -1,14 +1,17 @@
 <script lang="ts">
-	import { AppShell } from '@skeletonlabs/skeleton';
-	import { LightSwitch } from '@skeletonlabs/skeleton';
+	import { PUBLIC_APP_TITLE, PUBLIC_APP_URL } from '$env/static/public';
 	import FacebookLogo from '$lib/share-buttons/Facebook_Logo_Primary.png';
-	import XLogo from '$lib/share-buttons/logo-white.png';
 	import LineLogo from '$lib/share-buttons/LINE_Brand_icon.png';
+	import XLogo from '$lib/share-buttons/logo-white.png';
+	import { AppShell, LightSwitch, Modal, initializeStores } from '@skeletonlabs/skeleton';
 	import '../app.postcss';
 
-	const url = encodeURIComponent('https://mugenp.amiiby.com');
-	const title = encodeURIComponent('MuGenP');
+	initializeStores();
+	const url = encodeURIComponent(PUBLIC_APP_URL);
+	const title = encodeURIComponent(PUBLIC_APP_TITLE);
 </script>
+
+<Modal />
 
 <AppShell>
 	<svelte:fragment slot="header">

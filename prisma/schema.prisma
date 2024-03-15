@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider         = "zod-prisma-types"
+  output           = "../src/lib/schemas/zod"
+  createInputTypes = false
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Subject {
+  id        String @id
+  title     String
+  sortOrder Int    @default(0) @map("sort_order")
+
+  categories Category[]
+
+  @@map("subjects")
+}
+
+model Grade {
+  id        String @id
+  title     String
+  sortOrder Int    @default(0) @map("sort_order")
+
+  categories Category[]
+
+  @@map("grades")
+}
+
+model Category {
+  id        Int    @id @default(autoincrement())
+  /// @zod.string.min(1).toLowerCase()
+  slug      String
+  /// @zod.string.min(1)
+  title     String
+  sortOrder Int    @default(0) @map("sort_order")
+
+  subjectId String?  @map("subject_id")
+  subject   Subject? @relation(fields: [subjectId], references: [id])
+
+  gradeId String? @map("grade_id")
+  grade   Grade?  @relation(fields: [gradeId], references: [id])
+
+  parentId Int?       @map("parent_id")
+  parent   Category?  @relation("CategoryLinks", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryLinks")
+
+  contents Content[]
+
+  @@map("categories")
+}
+
+model Content {
+  id         Int      @id @default(autoincrement())
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+  title      String
+  message    String
+  component  String
+
+  @@map("contents")
+}
