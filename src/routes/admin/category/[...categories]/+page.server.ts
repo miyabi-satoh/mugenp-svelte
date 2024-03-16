@@ -9,67 +9,87 @@ const schema = CategorySchema.extend({
 	id: CategorySchema.shape.id.optional()
 });
 
-export const load = (async ({ parent }) => {
-	const { subjectId, gradeId, categories } = await parent();
+async function splitParams(params: string): Promise<string[]> {
+	const [subjectId, gradeId, ...categories] = params.split('/');
 
-	// categories配列を使用して、ネストされたカテゴリーのIDを構築し、
-	// そのIDに対応するカテゴリーをデータベースから検索します。
-	// 見つからない場合は404エラーを返します。
-	// 最後のカテゴリーをcategoryに格納します。
-	const { category, paths } = await (async () => {
-		let path = `/${subjectId}/${gradeId}`;
-		const paths = [{ path, title: 'Root' }];
+	// 指定されたsubjectIdが存在しない場合、404エラーを返します。
+	if (subjectId) {
+		const res = await prisma.subject.findUnique({
+			where: { id: subjectId },
+			select: { id: true }
+		});
+		if (!res) error(404, 'Not found.');
+	}
 
-		if (categories.length > 0) {
-			let parentId = null;
-			for (const [index, slug] of categories.entries()) {
-				const last = index === categories.length - 1;
-				const res = (await prisma.category.findFirst({
-					where: {
-						subjectId: parentId ? null : subjectId,
-						gradeId: parentId ? null : gradeId,
-						parentId,
-						slug
-					}
-				})) as Category | null;
-				if (!res) error(404, 'Not found.');
+	// 指定されたgradeIdが存在しない場合、404エラーを返します。
+	if (gradeId) {
+		const res = await prisma.grade.findUnique({
+			where: { id: gradeId },
+			select: { id: true }
+		});
+		if (!res) error(404, 'Not found.');
+	}
 
-				path += `/${res.slug}`;
-				paths.push({ path, title: res.title });
-
-				if (last) {
-					const category = await prisma.category.findUnique({
-						where: { id: res.id },
-						include: {
-							children: {
-								orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
-							}
-						}
-					});
-					return { category, paths };
+	// 指定されたcategoriesが正しい階層でない場合、404エラーを返します。
+	let lastId = 0
+	if (categories.length > 0) {
+		let parentId = null;
+		for (const [index, slug] of categories.entries()) {
+			const res: Category | null = await prisma.category.findFirst({
+				where: {
+					subjectId: parentId ? null : subjectId,
+					gradeId: parentId ? null : gradeId,
+					parentId,
+					slug
 				}
-				parentId = res.id;
-			}
-		} else if (gradeId && subjectId) {
-			const children = await prisma.category.findMany({
-				where: { subjectId, gradeId },
-				orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
 			});
-			const category = {
-				id: 0,
-				slug: 'root',
-				title: 'Root',
-				sortOrder: 0,
-				gradeId: gradeId ?? null,
-				subjectId: subjectId ?? null,
-				parentId: null,
-				children
-			} satisfies Category & { children: Category[] };
-
-			return { category, paths };
+			if (!res) error(404, 'Not found.');
+			parentId = res.id;
+			if (index === categories.length - 1) lastId = res.id
 		}
-		return { category: null, paths };
-	})();
+	}
+
+	return [subjectId, gradeId, `${lastId}`]
+}
+
+type FlattenCategory = {
+	path: string
+	title: string
+	depth: number
+}
+async function fetchCategories(subjectId: string | null, gradeId: string | null, parentId: number | null = null, depth: number = 0, curPath: string = "") {
+	const categories = await (async () => {
+		if (subjectId && gradeId) {
+			return await prisma.category.findMany({
+				where: { subjectId, gradeId },
+				orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
+			});
+		} else if (parentId) {
+			return await prisma.category.findMany({
+				where: { parentId },
+				orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
+			});
+
+		} else {
+			return []
+		}
+	})()
+
+	if (!curPath) curPath = `${subjectId}/${gradeId}`
+
+	const result: FlattenCategory[] = []
+	for (const category of categories) {
+		const path = `${curPath}/${category.slug}`
+		result.push({ depth, ...category, path })
+		const children = await fetchCategories(null, null, category.id, depth + 1, path)
+		result.push(...children)
+	}
+
+	return result
+}
+
+export const load = (async ({ params }) => {
+	const [subjectId, gradeId, categoryId] = await splitParams(params.categories)
 
 	const subjects = await prisma.subject.findMany({
 		orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
@@ -77,39 +97,39 @@ export const load = (async ({ parent }) => {
 	const grades = await prisma.grade.findMany({
 		orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
 	});
+	const categories = await fetchCategories(subjectId, gradeId)
+	console.log('-----')
+	categories.forEach(category => console.log(' '.repeat(category.depth) + category.title, category.path))
+	console.log('-----')
+
+	const category = await (async () => {
+		if (categoryId) {
+			return await prisma.category.findUnique({
+				where: { id: parseInt(categoryId) },
+				include: {
+					children: {
+						orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
+					}
+				}
+			})
+		}
+		return null
+	})()
+
+	const paths: { path: string, title: string }[] = []
 
 	const form = await superValidate(zod(schema));
-	return { subjects, grades, subjectId, gradeId, category, paths, form };
+	return { subjects, grades, categories, subjectId, gradeId, category, paths, form };
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
 	default: async ({ request, params }) => {
-		const [subjectId, gradeId, ...categories] = params.categories.split('/');
-		// categories配列の最後の要素をチェックして
-		// 'add'または'edit'の場合にその値をactionに設定し
-		// それ以外の場合はnullを設定します。
-		const action = (() => {
-			if (categories.length > 0) {
-				switch (categories[categories.length - 1]) {
-					case 'add':
-					case 'edit':
-						return categories.pop();
-				}
-			}
-			return null;
-		})();
-		console.dir(action);
-
+		const [subjectId, gradeId] = await splitParams(params.categories);
 		const form = await superValidate(request, zod(schema));
 		console.dir(form);
 		if (!form.valid) return message(form, 'Invalid form.');
 
-		if (!form.data.parentId) {
-			form.data.subjectId = subjectId;
-			form.data.gradeId = gradeId;
-			form.data.parentId = null;
-		}
-
+		// フォームデータのIDを使用してカテゴリーを検索し、存在しない場合はエラーメッセージを返す
 		if (form.data.id) {
 			const res = await prisma.category.findUnique({
 				where: { id: form.data.id }
@@ -118,6 +138,14 @@ export const actions: Actions = {
 				return message(form, `Category ${form.data.id} not found.`, { status: 400 });
 			}
 		}
+
+		// 親カテゴリが指定されていない -> 教科・学年直下
+		if (!form.data.parentId) {
+			form.data.subjectId = subjectId;
+			form.data.gradeId = gradeId;
+			form.data.parentId = null;
+		}
+
 		console.dir(form);
 
 		try {

@@ -4,16 +4,22 @@
 	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
-	import ModalExampleForm from './Form.svelte';
+	import ModalCategoryForm from './ModalCategoryForm.svelte';
+	import { Icon, PencilSquare, ChevronRight, ChevronDown } from 'svelte-hero-icons';
 
 	const modalStore = getModalStore();
 	export let data: PageData;
+	$: if (!data.subjectId) data.subjectId = '';
+	$: if (!data.gradeId) data.gradeId = '';
 
-	let subjectId = data.subjectId ?? '';
-	let gradeId = data.gradeId ?? '';
+	// let subjectId = data.subjectId ?? '';
+	// let gradeId = data.gradeId ?? '';
+
+	console.log(...data.paths);
+	// console.log(baseUrl);
 
 	function modalComponentForm(category: Category | null = null): void {
-		const c: ModalComponent = { ref: ModalExampleForm };
+		const c: ModalComponent = { ref: ModalCategoryForm };
 		const modal: ModalSettings = {
 			type: 'component',
 			component: c,
@@ -22,11 +28,11 @@
 		modalStore.trigger(modal);
 	}
 
-	function handleChange() {
-		if (subjectId && gradeId) {
-			goto(`/admin/category/${subjectId}/${gradeId}`);
-		} else if (subjectId) {
-			goto(`/admin/category/${subjectId}`);
+	function handleChange(): void {
+		if (data.subjectId && data.gradeId) {
+			goto(`/admin/category/${data.subjectId}/${data.gradeId}`);
+		} else if (data.subjectId) {
+			goto(`/admin/category/${data.subjectId}`);
 		} else {
 			goto(`/admin/category`);
 		}
@@ -37,7 +43,7 @@
 	<div class="grid grid-cols-2 gap-4">
 		<label class="label">
 			<span>Subject</span>
-			<select class="select" bind:value={subjectId} on:change={handleChange}>
+			<select class="select" bind:value={data.subjectId} on:change={handleChange}>
 				<option value="">---</option>
 				{#each data.subjects as subject (subject.id)}
 					<option value={subject.id}>{subject.title}</option>
@@ -47,9 +53,9 @@
 
 		<label class="label">
 			<span>Grade</span>
-			<select class="select" bind:value={gradeId} on:change={handleChange}>
+			<select class="select" bind:value={data.gradeId} on:change={handleChange}>
 				<option value="">---</option>
-				{#if subjectId}
+				{#if data.subjectId}
 					{#each data.grades as grade (grade.id)}
 						<option value={grade.id}>{grade.title}</option>
 					{/each}
@@ -58,11 +64,46 @@
 		</label>
 	</div>
 
+	<div class="grid grid-cols-[1fr_2fr] gap-4">
+		<div class="space-y-1">
+			<div>Categories</div>
+			<div class="rounded-token border-token border-surface-400-500-token p-4">
+				{#if data.categories}
+					{#each data.categories as category}
+						<a
+							class="p-1 flex items-center hover:bg-surface-200-700-token rounded-token"
+							href="/admin/category/{category.path}"
+						>
+							<Icon src={ChevronRight} size="1rem" class="mx-1" />
+							{category.title}
+						</a>
+					{/each}
+				{:else}
+					<div class="p-4">No categories.</div>
+				{/if}
+			</div>
+		</div>
+		<div class="space-y-1">
+			<div>/</div>
+			<div class="flex justify-end gap-1">
+				<button class="btn variant-filled">Add category</button>
+				<button class="btn variant-filled">Add content</button>
+			</div>
+			<div class="rounded-token border-token border-surface-400-500-token bg-surface-200-700-token">
+				{#if data.category}
+					<div></div>
+				{:else}
+					<div class="p-4">No items.</div>
+				{/if}
+			</div>
+		</div>
+	</div>
+
 	{#if data.category}
 		<div>
 			{#each data.paths as path, index}
 				{#if index < data.paths.length - 1}
-					<a class="anchor" href="/admin/category/{path.path}">{path.title}</a>
+					<a class="anchor" href="/admin/category{path.path}">{path.title}</a>
 					<span class="mx-1">/</span>
 				{:else}
 					{path.title}
@@ -72,21 +113,24 @@
 		<div>
 			<div class="flex justify-between items-center">
 				<div class="text-xl font-bold">Sub categories</div>
-				<button class="btn variant-filled-secondary" on:click={() => modalComponentForm()}
-					>Add</button
-				>
+				<button class="btn variant-filled-secondary" on:click={() => modalComponentForm()}>
+					Add category
+				</button>
 			</div>
 			<div
 				class="mt-1 rounded-token border-token border-surface-400-500-token bg-surface-200-700-token"
 			>
 				{#if data.category.children.length > 0}
 					{#each data.category.children as category (category.id)}
+						{@const baseUrl = `/admin/category` + data.paths[data.paths.length - 1].path}
 						<div class="p-4 flex justify-between">
-							<a class="anchor" href="/admin/{category.id}">
+							<a class="anchor" href="{baseUrl}/{category.slug}">
 								{category.title}
 								<span class="text-sm opacity-50">({category.slug})</span>
 							</a>
-							<button on:click={() => modalComponentForm(category)}>編集</button>
+							<button on:click={() => modalComponentForm(category)}>
+								<Icon src={PencilSquare} size="1.5rem" />
+							</button>
 						</div>
 					{/each}
 				{:else}
