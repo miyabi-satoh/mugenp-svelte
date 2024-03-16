@@ -31,7 +31,7 @@ async function splitParams(params: string): Promise<string[]> {
 	}
 
 	// 指定されたcategoriesが正しい階層でない場合、404エラーを返します。
-	let lastId = 0
+	let lastId = 0;
 	if (categories.length > 0) {
 		let parentId = null;
 		for (const [index, slug] of categories.entries()) {
@@ -45,19 +45,25 @@ async function splitParams(params: string): Promise<string[]> {
 			});
 			if (!res) error(404, 'Not found.');
 			parentId = res.id;
-			if (index === categories.length - 1) lastId = res.id
+			if (index === categories.length - 1) lastId = res.id;
 		}
 	}
 
-	return [subjectId, gradeId, `${lastId}`]
+	return [subjectId, gradeId, lastId > 0 ? `${lastId}` : ''];
 }
 
 type FlattenCategory = {
-	path: string
-	title: string
-	depth: number
-}
-async function fetchCategories(subjectId: string | null, gradeId: string | null, parentId: number | null = null, depth: number = 0, curPath: string = "") {
+	path: string;
+	title: string;
+	depth: number;
+};
+async function fetchCategories(
+	subjectId: string | null,
+	gradeId: string | null,
+	parentId: number | null = null,
+	depth: number = 0,
+	curPath: string = ''
+) {
 	const categories = await (async () => {
 		if (subjectId && gradeId) {
 			return await prisma.category.findMany({
@@ -69,27 +75,26 @@ async function fetchCategories(subjectId: string | null, gradeId: string | null,
 				where: { parentId },
 				orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
 			});
-
 		} else {
-			return []
+			return [];
 		}
-	})()
+	})();
 
-	if (!curPath) curPath = `${subjectId}/${gradeId}`
+	if (!curPath) curPath = `${subjectId}/${gradeId}`;
 
-	const result: FlattenCategory[] = []
+	const result: FlattenCategory[] = [];
 	for (const category of categories) {
-		const path = `${curPath}/${category.slug}`
-		result.push({ depth, ...category, path })
-		const children = await fetchCategories(null, null, category.id, depth + 1, path)
-		result.push(...children)
+		const path = `${curPath}/${category.slug}`;
+		result.push({ depth, ...category, path });
+		const children = await fetchCategories(null, null, category.id, depth + 1, path);
+		result.push(...children);
 	}
 
-	return result
+	return result;
 }
 
 export const load = (async ({ params }) => {
-	const [subjectId, gradeId, categoryId] = await splitParams(params.categories)
+	const [subjectId, gradeId, categoryId] = await splitParams(params.categories);
 
 	const subjects = await prisma.subject.findMany({
 		orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
@@ -97,10 +102,10 @@ export const load = (async ({ params }) => {
 	const grades = await prisma.grade.findMany({
 		orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
 	});
-	const categories = await fetchCategories(subjectId, gradeId)
-	console.log('-----')
-	categories.forEach(category => console.log(' '.repeat(category.depth) + category.title, category.path))
-	console.log('-----')
+	const categories = await fetchCategories(subjectId, gradeId);
+	// console.log('-----')
+	// categories.forEach(category => console.log(' '.repeat(category.depth) + category.title, category.path))
+	// console.log('-----')
 
 	const category = await (async () => {
 		if (categoryId) {
@@ -111,12 +116,31 @@ export const load = (async ({ params }) => {
 						orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
 					}
 				}
-			})
+			});
 		}
-		return null
-	})()
+		if (subjectId && gradeId) {
+			const children = await prisma.category.findMany({
+				where: { subjectId, gradeId },
+				orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
+			});
+			const subject = subjects.find((s) => s.id === subjectId);
+			const grade = grades.find((g) => g.id === gradeId);
+			return {
+				id: 0,
+				subjectId,
+				gradeId,
+				parentId: null,
+				slug: `${subjectId}/${gradeId}`,
+				title: `${subject?.title} ${grade?.title}`,
+				sortOrder: 0,
+				children
+			} satisfies Category & { children: Category[] };
+		}
+		return null;
+	})();
+	// console.log('category', category);
 
-	const paths: { path: string, title: string }[] = []
+	const paths: { path: string; title: string }[] = [];
 
 	const form = await superValidate(zod(schema));
 	return { subjects, grades, categories, subjectId, gradeId, category, paths, form };
