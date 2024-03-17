@@ -9,26 +9,9 @@ const schema = CategorySchema.extend({
 	id: CategorySchema.shape.id.optional()
 });
 
-async function splitParams(params: string): Promise<string[]> {
-	const [subjectId, gradeId, ...categories] = params.split('/');
-
-	// 指定されたsubjectIdが存在しない場合、404エラーを返します。
-	if (subjectId) {
-		const res = await prisma.subject.findUnique({
-			where: { id: subjectId },
-			select: { id: true }
-		});
-		if (!res) error(404, 'Not found.');
-	}
-
-	// 指定されたgradeIdが存在しない場合、404エラーを返します。
-	if (gradeId) {
-		const res = await prisma.grade.findUnique({
-			where: { id: gradeId },
-			select: { id: true }
-		});
-		if (!res) error(404, 'Not found.');
-	}
+// URLパラメータからカテゴリー階層を分割し、それぞれの存在を検証する関数
+async function splitParams(params: string): Promise<number> {
+	const categories = params.split('/').filter((s) => !!s);
 
 	// 指定されたcategoriesが正しい階層でない場合、404エラーを返します。
 	let lastId = 0;
@@ -37,8 +20,6 @@ async function splitParams(params: string): Promise<string[]> {
 		for (const [index, slug] of categories.entries()) {
 			const res: Category | null = await prisma.category.findFirst({
 				where: {
-					subjectId: parentId ? null : subjectId,
-					gradeId: parentId ? null : gradeId,
 					parentId,
 					slug
 				}
@@ -48,8 +29,7 @@ async function splitParams(params: string): Promise<string[]> {
 			if (index === categories.length - 1) lastId = res.id;
 		}
 	}
-
-	return [subjectId, gradeId, lastId > 0 ? `${lastId}` : ''];
+	return lastId;
 }
 
 type FlattenCategory = {
@@ -58,35 +38,25 @@ type FlattenCategory = {
 	depth: number;
 };
 async function fetchCategories(
-	subjectId: string | null,
-	gradeId: string | null,
 	parentId: number | null = null,
-	depth: number = 0,
+	depth: number = 1,
 	curPath: string = ''
 ) {
-	const categories = await (async () => {
-		if (subjectId && gradeId) {
-			return await prisma.category.findMany({
-				where: { subjectId, gradeId },
-				orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
-			});
-		} else if (parentId) {
-			return await prisma.category.findMany({
-				where: { parentId },
-				orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
-			});
-		} else {
-			return [];
-		}
-	})();
-
-	if (!curPath) curPath = `${subjectId}/${gradeId}`;
+	const categories = await prisma.category.findMany({
+		where: { parentId },
+		select: {
+			id: true,
+			slug: true,
+			title: true
+		},
+		orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
+	});
 
 	const result: FlattenCategory[] = [];
 	for (const category of categories) {
 		const path = `${curPath}/${category.slug}`;
 		result.push({ depth, ...category, path });
-		const children = await fetchCategories(null, null, category.id, depth + 1, path);
+		const children = await fetchCategories(category.id, depth + 1, path);
 		result.push(...children);
 	}
 
@@ -94,61 +64,49 @@ async function fetchCategories(
 }
 
 export const load = (async ({ params }) => {
-	const [subjectId, gradeId, categoryId] = await splitParams(params.categories);
+	// console.log('load')
+	const categoryId = await splitParams(params.categories);
 
-	const subjects = await prisma.subject.findMany({
-		orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
-	});
-	const grades = await prisma.grade.findMany({
-		orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
-	});
-	const categories = await fetchCategories(subjectId, gradeId);
-	// console.log('-----')
-	// categories.forEach(category => console.log(' '.repeat(category.depth) + category.title, category.path))
-	// console.log('-----')
+	const categories = await fetchCategories();
+	console.log('--- categories ---');
+	console.log(categories);
 
-	const category = await (async () => {
-		if (categoryId) {
-			return await prisma.category.findUnique({
-				where: { id: parseInt(categoryId) },
-				include: {
-					children: {
-						orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
-					}
-				}
-			});
-		}
-		if (subjectId && gradeId) {
-			const children = await prisma.category.findMany({
-				where: { subjectId, gradeId },
+	const category = await prisma.category.findUnique({
+		where: { id: categoryId },
+		include: {
+			children: {
 				orderBy: [{ sortOrder: 'asc' }, { title: 'asc' }]
-			});
-			const subject = subjects.find((s) => s.id === subjectId);
-			const grade = grades.find((g) => g.id === gradeId);
-			return {
-				id: 0,
-				subjectId,
-				gradeId,
-				parentId: null,
-				slug: `${subjectId}/${gradeId}`,
-				title: `${subject?.title} ${grade?.title}`,
-				sortOrder: 0,
-				children
-			} satisfies Category & { children: Category[] };
+			}
 		}
-		return null;
-	})();
-	// console.log('category', category);
+	});
+	console.log('--- category ---');
+	console.log(category);
 
-	const paths: { path: string; title: string }[] = [];
+	const paths: { href: string; title: string }[] = [];
+	let id: number | null = categoryId;
+	while (id !== null && id > 0) {
+		const res: Category | null = await prisma.category.findUnique({
+			where: { id }
+		});
+		if (!res) {
+			break;
+		}
+		paths.unshift({
+			href: res.slug,
+			title: res.title
+		});
+		id = res.parentId;
+	}
+	console.log('--- paths ---');
+	console.log(paths);
 
 	const form = await superValidate(zod(schema));
-	return { subjects, grades, categories, subjectId, gradeId, category, paths, form };
+	return { categories, category, form };
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
 	default: async ({ request, params }) => {
-		const [subjectId, gradeId] = await splitParams(params.categories);
+		const _categoryId = await splitParams(params.categories);
 		const form = await superValidate(request, zod(schema));
 		console.dir(form);
 		if (!form.valid) return message(form, 'Invalid form.');
@@ -162,15 +120,6 @@ export const actions: Actions = {
 				return message(form, `Category ${form.data.id} not found.`, { status: 400 });
 			}
 		}
-
-		// 親カテゴリが指定されていない -> 教科・学年直下
-		if (!form.data.parentId) {
-			form.data.subjectId = subjectId;
-			form.data.gradeId = gradeId;
-			form.data.parentId = null;
-		}
-
-		console.dir(form);
 
 		try {
 			await prisma.$transaction(async (prisma) => {

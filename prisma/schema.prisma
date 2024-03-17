@@ -19,26 +19,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Subject {
-  id        String @id
-  title     String
-  sortOrder Int    @default(0) @map("sort_order")
-
-  categories Category[]
-
-  @@map("subjects")
-}
-
-model Grade {
-  id        String @id
-  title     String
-  sortOrder Int    @default(0) @map("sort_order")
-
-  categories Category[]
-
-  @@map("grades")
-}
-
 model Category {
   id        Int    @id @default(autoincrement())
   /// @zod.string.min(1).toLowerCase()
@@ -46,12 +26,6 @@ model Category {
   /// @zod.string.min(1)
   title     String
   sortOrder Int    @default(0) @map("sort_order")
-
-  subjectId String?  @map("subject_id")
-  subject   Subject? @relation(fields: [subjectId], references: [id])
-
-  gradeId String? @map("grade_id")
-  grade   Grade?  @relation(fields: [gradeId], references: [id])
 
   parentId Int?       @map("parent_id")
   parent   Category?  @relation("CategoryLinks", fields: [parentId], references: [id])

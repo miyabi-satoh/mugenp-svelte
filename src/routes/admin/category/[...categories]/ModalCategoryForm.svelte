@@ -61,7 +61,7 @@
 				<p>{$message}</p>
 			{/if}
 			<input type="hidden" name="id" value={$form.id ?? ''} />
-			<input type="hidden" name="parentId" value={data.category?.id} />
+			<input type="hidden" name="parentId" value={data.category?.id ?? ''} />
 		</div>
 
 		<footer class={parent.regionFooter}>
