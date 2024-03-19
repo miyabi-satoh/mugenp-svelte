@@ -82,26 +82,33 @@ export const load = (async ({ params }) => {
 	console.log('--- category ---');
 	console.log(category);
 
-	const paths: { href: string; title: string }[] = [];
-	let id: number | null = categoryId;
-	while (id !== null && id > 0) {
-		const res: Category | null = await prisma.category.findUnique({
-			where: { id }
-		});
-		if (!res) {
-			break;
+	const paths = await (async () => {
+		const paths: { href: string; title: string }[] = [];
+		let id: number | null = categoryId;
+		while (id !== null && id > 0) {
+			const res: Category | null = await prisma.category.findUnique({
+				where: { id }
+			});
+			if (!res) {
+				break;
+			}
+			paths.unshift({
+				href: res.slug,
+				title: res.title
+			});
+			id = res.parentId;
 		}
-		paths.unshift({
-			href: res.slug,
-			title: res.title
+		let href = '';
+		return paths.map((path) => {
+			href += '/' + path.href;
+			return { ...path, href };
 		});
-		id = res.parentId;
-	}
+	})();
 	console.log('--- paths ---');
 	console.log(paths);
 
 	const form = await superValidate(zod(schema));
-	return { categories, category, form };
+	return { categories, category, paths, form };
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {

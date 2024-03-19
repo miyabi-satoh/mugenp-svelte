@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { Category } from '$lib/schemas/zod';
 	import type { ModalComponent, ModalSettings } from '@skeletonlabs/skeleton';
 	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { ChevronRight, Home, Icon, PencilSquare } from 'svelte-hero-icons';
 	import type { PageData } from './$types';
 	import ModalCategoryForm from './ModalCategoryForm.svelte';
-	import { Icon, PencilSquare, ChevronRight, Home } from 'svelte-hero-icons';
-	import { page } from '$app/stores';
 
 	const modalStore = getModalStore();
 	export let data: PageData;
@@ -47,7 +47,13 @@
 			</div>
 		</div>
 		<div class="space-y-1">
-			<div>Todo:</div>
+			<div>
+				<a href="/admin/category">Root</a>
+				{#each data.paths as { href, title }}
+					<span class="mx-1">/</span>
+					<a href="/admin/category/{href}">{title}</a>
+				{/each}
+			</div>
 			<div class="flex justify-end gap-1 pb-1">
 				<button class="btn variant-filled btn-sm" on:click={() => modalComponentForm()}
 					>Add category</button
