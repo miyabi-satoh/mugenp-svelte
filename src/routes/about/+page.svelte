@@ -1,12 +1,12 @@
 <script lang="ts">
 	import Katex from '$lib/Katex.svelte';
-	import { HouseSolid } from 'svelte-awesome-icons';
+	import IconHome from '~icons/mdi/home';
 </script>
 
 <div class="space-y-16">
 	<div>
-		<a class="anchor" href="/">
-			<HouseSolid class="inline text-base" />Home
+		<a class="anchor no-underline flex items-center gap-1" href="/">
+			<IconHome /><span>Home</span>
 		</a>
 	</div>
 	<div>

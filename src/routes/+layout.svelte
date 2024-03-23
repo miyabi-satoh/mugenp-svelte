@@ -7,7 +7,7 @@
 	import extend from 'just-extend';
 	import { MetaTags, type MetaTagsProps } from 'svelte-meta-tags';
 	import '../app.postcss';
-	import { Icon, InformationCircle } from 'svelte-hero-icons';
+	import IconInfoCircle from '~icons/fa-solid/info-circle';
 
 	initializeStores();
 	export let data;
@@ -46,7 +46,10 @@
 				</a>
 			</div>
 			<div class="flex justify-end items-center gap-4">
-				<a href="/about">About</a>
+				<a href="/about" class="anchor no-underline flex items-center gap-1">
+					<IconInfoCircle />
+					<span>About</span>
+				</a>
 				<LightSwitch rounded="rounded-full" />
 			</div>
 		</div>
