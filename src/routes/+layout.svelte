@@ -7,6 +7,7 @@
 	import extend from 'just-extend';
 	import { MetaTags, type MetaTagsProps } from 'svelte-meta-tags';
 	import '../app.postcss';
+	import { Icon, InformationCircle } from 'svelte-hero-icons';
 
 	initializeStores();
 	export let data;
@@ -27,7 +28,7 @@
 				</a>
 			</div>
 			<div class="leading-none flex gap-2 items-center">
-				<span class="hidden sm:inline">SNSでシェア</span>
+				<span class="hidden sm:inline">Share on</span>
 				<a href="https://www.facebook.com/sharer/sharer.php?u={metaTags.canonical}">
 					<img alt="Share on Facebook" src={FacebookLogo} class="h-8 w-8" />
 				</a>
@@ -44,7 +45,8 @@
 					<img alt="Share on Line" src={LineLogo} class="rounded-full" />
 				</a>
 			</div>
-			<div class="flex justify-end">
+			<div class="flex justify-end items-center gap-4">
+				<a href="/about">About</a>
 				<LightSwitch rounded="rounded-full" />
 			</div>
 		</div>

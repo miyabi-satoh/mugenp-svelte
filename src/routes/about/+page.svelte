@@ -1,8 +1,14 @@
 <script lang="ts">
 	import Katex from '$lib/Katex.svelte';
+	import { HouseSolid } from 'svelte-awesome-icons';
 </script>
 
 <div class="space-y-16">
+	<div>
+		<a class="anchor" href="/">
+			<HouseSolid class="inline text-base" />Home
+		</a>
+	</div>
 	<div>
 		<h2>このサイトについて</h2>
 		<p>

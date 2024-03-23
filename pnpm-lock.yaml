@@ -80,6 +80,9 @@ devDependencies:
   svelte:
     specifier: ^4.2.12
     version: 4.2.12
+  svelte-awesome-icons:
+    specifier: ^1.1.2
+    version: 1.1.2(svelte@4.2.12)
   svelte-check:
     specifier: ^3.6.8
     version: 3.6.8(postcss@8.4.36)(svelte@4.2.12)
@@ -3242,6 +3245,14 @@ packages:
   /supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+    dev: true
+
+  /svelte-awesome-icons@1.1.2(svelte@4.2.12):
+    resolution: {integrity: sha512-OlmZmB+RwUmSBPXMuGrxndBPHKC7es/Q+GiB0kyq+G7hDjWWSyefchNern4W9fswcOvnJPeYHokjsNwzVJHN5w==}
+    peerDependencies:
+      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
+    dependencies:
+      svelte: 4.2.12
     dev: true
 
   /svelte-check@3.6.8(postcss@8.4.36)(svelte@4.2.12):
