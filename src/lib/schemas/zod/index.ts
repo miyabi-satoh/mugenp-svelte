@@ -15,6 +15,10 @@ export const TransactionIsolationLevelSchema = z.enum([
 	'Serializable'
 ]);
 
+export const SubjectScalarFieldEnumSchema = z.enum(['id', 'title', 'sortOrder']);
+
+export const GradeScalarFieldEnumSchema = z.enum(['id', 'title', 'sortOrder']);
+
 export const CategoryScalarFieldEnumSchema = z.enum([
 	'id',
 	'slug',
@@ -39,6 +43,30 @@ export const NullsOrderSchema = z.enum(['first', 'last']);
 /////////////////////////////////////////
 // MODELS
 /////////////////////////////////////////
+
+/////////////////////////////////////////
+// SUBJECT SCHEMA
+/////////////////////////////////////////
+
+export const SubjectSchema = z.object({
+	id: z.string(),
+	title: z.string(),
+	sortOrder: z.number().int()
+});
+
+export type Subject = z.infer<typeof SubjectSchema>;
+
+/////////////////////////////////////////
+// GRADE SCHEMA
+/////////////////////////////////////////
+
+export const GradeSchema = z.object({
+	id: z.string(),
+	title: z.string(),
+	sortOrder: z.number().int()
+});
+
+export type Grade = z.infer<typeof GradeSchema>;
 
 /////////////////////////////////////////
 // CATEGORY SCHEMA

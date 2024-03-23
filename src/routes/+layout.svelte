@@ -1,15 +1,20 @@
 <script lang="ts">
-	import { PUBLIC_APP_TITLE, PUBLIC_APP_URL } from '$env/static/public';
+	import { page } from '$app/stores';
 	import FacebookLogo from '$lib/share-buttons/Facebook_Logo_Primary.png';
 	import LineLogo from '$lib/share-buttons/LINE_Brand_icon.png';
 	import XLogo from '$lib/share-buttons/logo-white.png';
 	import { AppShell, LightSwitch, Modal, initializeStores } from '@skeletonlabs/skeleton';
+	import extend from 'just-extend';
+	import { MetaTags, type MetaTagsProps } from 'svelte-meta-tags';
 	import '../app.postcss';
 
 	initializeStores();
-	const url = encodeURIComponent(PUBLIC_APP_URL);
-	const title = encodeURIComponent(PUBLIC_APP_TITLE);
+	export let data;
+	let metaTags: MetaTagsProps;
+	$: metaTags = extend(true, {}, data.baseMetaTags, $page.data.pageMetaTags);
 </script>
+
+<MetaTags {...metaTags} />
 
 <Modal />
 
@@ -23,16 +28,19 @@
 			</div>
 			<div class="leading-none flex gap-2 items-center">
 				<span class="hidden sm:inline">SNSでシェア</span>
-				<a href="https://www.facebook.com/sharer/sharer.php?u={url}">
+				<a href="https://www.facebook.com/sharer/sharer.php?u={metaTags.canonical}">
 					<img alt="Share on Facebook" src={FacebookLogo} class="h-8 w-8" />
 				</a>
 				<a
-					href="https://twitter.com/intent/tweet?url={url}&text={title}"
+					href="https://twitter.com/intent/tweet?url={metaTags.canonical}&text={metaTags.title}"
 					class="h-8 w-8 bg-black rounded-full"
 				>
 					<img alt="Share on X" src={XLogo} class="scale-50" />
 				</a>
-				<a href="https://social-plugins.line.me/lineit/share?url={url}" class="h-8 w-8">
+				<a
+					href="https://social-plugins.line.me/lineit/share?url={metaTags.canonical}"
+					class="h-8 w-8"
+				>
 					<img alt="Share on Line" src={LineLogo} class="rounded-full" />
 				</a>
 			</div>

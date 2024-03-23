@@ -7,7 +7,7 @@
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"customizations": {
 		"vscode": {
-			"extensions": []
+			"extensions": ["svelte.svelte-vscode"]
 		}
 	},
 

@@ -226,7 +226,7 @@ export const pages = [
 		chapter: '式の計算',
 		section: '式の計算',
 		subsection: 'いろいろな多項式の計算',
-		title: '整数×多項式と加減法',
+		title: '整数 ${\\times}$ 多項式と加減法',
 		message: '次の計算をしなさい。'
 	},
 	{
@@ -236,7 +236,7 @@ export const pages = [
 		chapter: '式の計算',
 		section: '式の計算',
 		subsection: 'いろいろな多項式の計算',
-		title: '分数×多項式と加減法',
+		title: '分数 ${\\times}$ 多項式と加減法',
 		message: '次の計算をしなさい。'
 	},
 	{
@@ -296,7 +296,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '式の乗法・除法',
-		title: '\\( (a+b)\\times c \\) の計算',
+		title: '${(a+b) \\times c}$ の計算',
 		message: '次の計算をしなさい。'
 	},
 	{
@@ -306,7 +306,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '式の乗法・除法',
-		title: '\\( (a+b)\\div c \\) の計算',
+		title: '${(a+b) \\div c}$ の計算',
 		message: '次の計算をしなさい。'
 	},
 	{
@@ -316,7 +316,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '式の乗法・除法',
-		title: '\\( (a+b)(c+d) \\) の展開',
+		title: '${(a+b)(c+d)}$ の展開',
 		message: '次の式を展開しなさい。'
 	},
 	{
@@ -326,7 +326,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '乗法の公式',
-		title: '\\((x+a)(x+b)\\) の展開',
+		title: '${(x+a)(x+b)}$ の展開',
 		message: '次の式を展開しなさい。'
 	},
 	{
@@ -336,7 +336,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '乗法の公式',
-		title: '\\((a\\pm b)^2\\) の展開',
+		title: '${(a \\pm b)^2}$ の展開',
 		message: '次の式を展開しなさい。'
 	},
 	{
@@ -346,7 +346,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '乗法の公式',
-		title: '\\((a + b)(a - b)\\) の展開',
+		title: '${(a + b)(a - b)}$ の展開',
 		message: '次の式を展開しなさい。'
 	},
 	{
@@ -386,7 +386,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '因数分解',
-		title: '\\( a^2 - b^2 \\) の因数分解',
+		title: '${a^2 - b^2}$ の因数分解',
 		message: '次の式を因数分解しなさい。'
 	},
 	{
@@ -396,7 +396,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '因数分解',
-		title: '\\( a^2 \\pm 2ab +b^2 \\) の因数分解',
+		title: '${a^2 \\pm 2ab +b^2}$ の因数分解',
 		message: '次の式を因数分解しなさい。'
 	},
 	{
@@ -406,7 +406,7 @@ export const pages = [
 		chapter: '式の展開と因数分解',
 		section: '式の展開と因数分解',
 		subsection: '因数分解',
-		title: '\\(x^2 + (a+b)x +ab \\) の因数分解',
+		title: '${x^2 + (a+b)x +ab}$ の因数分解',
 		message: '次の式を因数分解しなさい。'
 	},
 	{
