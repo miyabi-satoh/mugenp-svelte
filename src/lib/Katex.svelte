@@ -1,15 +1,28 @@
 <script lang="ts">
 	import katex from 'katex';
-	import 'katex/dist/katex.min.css';
 	import { afterUpdate } from 'svelte';
 
 	export let displayMode = false;
-	let output: HTMLSpanElement;
+	const options: katex.KatexOptions = {
+		displayMode,
+		throwOnError: false
+	};
+
 	let latex: HTMLSpanElement;
+	let output: string;
 	// trigger re-rendering on state change
 	afterUpdate(async () => {
 		if (latex.textContent) {
-			katex.render(latex.textContent, output, { displayMode });
+			// ${...}$ の部分だけkatexでレンダリングする
+			output = latex.textContent
+				.split('$')
+				.map((text) => {
+					if (/^\{.*\}$/.test(text)) {
+						return katex.renderToString(text.slice(1, -1), options);
+					}
+					return text;
+				})
+				.join('');
 		}
 	});
 </script>
@@ -19,5 +32,4 @@
 	<slot />
 </span>
 
-<!-- Display rendered math-->
-<span bind:this={output} />
+{@html output}

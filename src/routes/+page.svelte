@@ -54,13 +54,7 @@
 					{page.chapter} / {page.subsection}
 				</h2>
 				<p class="p-4 text-center bg-surface-200-700-token rounded-b-lg">
-					{#each page.title.split('$') as text}
-						{#if /^\{.*\}$/.test(text)}
-							<Katex>{text.slice(1, -1)}</Katex>
-						{:else}
-							{text}
-						{/if}
-					{/each}
+					<Katex>{page.title}</Katex>
 				</p>
 			</div>
 		</a>

@@ -6,6 +6,7 @@
 	import XLogo from '$lib/share-buttons/logo-white.png';
 	import { AppShell, LightSwitch, Modal, initializeStores } from '@skeletonlabs/skeleton';
 	import extend from 'just-extend';
+	import 'katex/dist/katex.min.css';
 	import { MetaTags, type MetaTagsProps } from 'svelte-meta-tags';
 	import '../app.postcss';
 
