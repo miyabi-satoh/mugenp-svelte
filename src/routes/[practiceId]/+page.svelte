@@ -10,7 +10,7 @@
 		<IconHome /><span>Home</span>
 	</a>
 
-	<h2 class="h6 font-bold">{data.page.grade} {data.page.section} / {data.page.subsection}</h2>
+	<h2 class="h5 font-bold">{data.page.grade} {data.page.section} / {data.page.subsection}</h2>
 
 	<p>{data.page.message}</p>
 </div>
