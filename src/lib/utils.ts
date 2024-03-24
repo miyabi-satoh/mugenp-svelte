@@ -1,4 +1,4 @@
-import Fraction from 'fraction.js'
+import Fraction from 'fraction.js';
 
 export function randomInt(max: number, min: number = 0): number {
 	if (min > max) {
@@ -17,7 +17,7 @@ export function chooseRandom<T>(...array: T[]): T {
 
 export function Latex(f: Fraction, frac: boolean = true) {
 	if (frac && f.d !== 1) {
-		return `${f.s < 0 ? '-' : ''}\\frac{${f.n}}{${f.d}}`
+		return `${f.s < 0 ? '-' : ''}\\frac{${f.n}}{${f.d}}`;
 	}
-	return f.toString()
+	return f.toString();
 }
