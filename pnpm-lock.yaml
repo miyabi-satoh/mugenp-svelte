@@ -65,6 +65,9 @@ devDependencies:
   eslint-plugin-unused-imports:
     specifier: ^3.1.0
     version: 3.1.0(@typescript-eslint/eslint-plugin@7.3.1)(eslint@8.57.0)
+  fraction.js:
+    specifier: ^4.3.7
+    version: 4.3.7
   just-extend:
     specifier: ^6.2.0
     version: 6.2.0
