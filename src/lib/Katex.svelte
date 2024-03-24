@@ -3,6 +3,7 @@
 	import { afterUpdate } from 'svelte';
 
 	export let displayMode = false;
+	export let displayStyle = true;
 	const options: katex.KatexOptions = {
 		displayMode,
 		throwOnError: false
@@ -18,7 +19,10 @@
 				.split('$')
 				.map((text) => {
 					if (/^\{.*\}$/.test(text)) {
-						return katex.renderToString(text.slice(1, -1), options);
+						return katex.renderToString(
+							(displayStyle ? '\\displaystyle' : '') + text.slice(1, -1),
+							options
+						);
 					}
 					return text;
 				})
