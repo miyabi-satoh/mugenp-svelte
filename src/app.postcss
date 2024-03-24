@@ -17,6 +17,14 @@
 	src: url('/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Bold.ttf');
 }
 
+:root [data-theme='skeleton'] {
+	--theme-rounded-base: 6px;
+	--theme-font-family-base: 'MPLUSRounded1c', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN',
+		sans-serif;
+	--theme-font-family-heading: 'MPLUSRounded1c', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN',
+		sans-serif;
+}
+
 @media screen {
 	html,
 	body {
@@ -24,16 +32,14 @@
 	}
 }
 
+@layer components {
+	.radio {
+		@apply rounded-full;
+	}
+}
+
 @layer utilities {
 	.font-bold {
 		font-family: 'MPLUSRounded1c-Bold', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN', sans-serif;
 	}
-}
-
-:root [data-theme='skeleton'] {
-	--theme-rounded-base: 6px;
-	--theme-font-family-base: 'MPLUSRounded1c', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN',
-		sans-serif;
-	--theme-font-family-heading: 'MPLUSRounded1c', Verdana, Meiryo, 'Hiragino Kaku Gothic ProN',
-		sans-serif;
 }
