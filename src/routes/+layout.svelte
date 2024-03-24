@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { IconInfoCircle } from '$lib/icons';
 	import FacebookLogo from '$lib/share-buttons/Facebook_Logo_Primary.png';
 	import LineLogo from '$lib/share-buttons/LINE_Brand_icon.png';
 	import XLogo from '$lib/share-buttons/logo-white.png';
@@ -7,7 +8,6 @@
 	import extend from 'just-extend';
 	import { MetaTags, type MetaTagsProps } from 'svelte-meta-tags';
 	import '../app.postcss';
-	import IconInfoCircle from '~icons/fa-solid/info-circle';
 
 	initializeStores();
 	export let data;
@@ -29,18 +29,20 @@
 			</div>
 			<div class="leading-none flex gap-2 items-center">
 				<span class="hidden sm:inline">Share on</span>
-				<a href="https://www.facebook.com/sharer/sharer.php?u={metaTags.canonical}">
+				<a href="https://www.facebook.com/sharer/sharer.php?u={metaTags.canonical}" rel="external">
 					<img alt="Share on Facebook" src={FacebookLogo} class="h-8 w-8" />
 				</a>
 				<a
 					href="https://twitter.com/intent/tweet?url={metaTags.canonical}&text={metaTags.title}"
 					class="h-8 w-8 bg-black rounded-full"
+					rel="external"
 				>
 					<img alt="Share on X" src={XLogo} class="scale-50" />
 				</a>
 				<a
 					href="https://social-plugins.line.me/lineit/share?url={metaTags.canonical}"
 					class="h-8 w-8"
+					rel="external"
 				>
 					<img alt="Share on Line" src={LineLogo} class="rounded-full" />
 				</a>

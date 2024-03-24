@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Katex from '$lib/Katex.svelte';
-	import IconHome from '~icons/mdi/home';
+	import { IconHome } from '$lib/icons';
 </script>
 
 <div class="space-y-16">
