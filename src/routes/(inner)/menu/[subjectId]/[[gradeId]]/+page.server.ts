@@ -1,9 +1,25 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
 import type { PageServerLoad } from './$types';
+import { prisma } from '$lib/server/prisma';
+import { error } from '@sveltejs/kit';
 
-export const load = (async () => {
+export const load = (async ({ params }) => {
+	const { subjectId, gradeId } = params;
+	const subject = await prisma.subject.findUnique({
+		where: { id: subjectId }
+	});
+	if (!subject) error(404, 'Not found');
+
+	if (gradeId) {
+		const grade = await prisma.grade.findUnique({
+			where: { id: gradeId }
+		});
+		if (!grade) error(404, 'Not found');
+	}
+
 	const pageMetaTags = Object.freeze({
-		title: 'HOME'
+		title: 'MENU'
 	} satisfies MetaTagsProps);
+
 	return { pageMetaTags };
 }) satisfies PageServerLoad;
