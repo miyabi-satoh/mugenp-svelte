@@ -19,37 +19,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Subject {
-  id        String @id
+model Category {
+  id        Int    @id @default(autoincrement())
+  slug      String
   title     String
-  sortOrder Int    @default(0)
+  sortOrder Int    @default(0) @map("sort_order")
+
+  parentId Int?
+  parent   Category?  @relation("CategoryLinks", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryLinks")
+
+  rootCategories RootCategory[]
+  contents       Content[]
+
+  @@map("categories")
+}
+
+model Subject {
+  id        Int    @id @default(autoincrement())
+  slug      String @unique
+  title     String
+  sortOrder Int    @default(0) @map("sort_order")
+
+  rootCategories RootCategory[]
 
   @@map("subjects")
 }
 
 model Grade {
-  id        String @id
+  id        Int    @id @default(autoincrement())
+  slug      String @unique
   title     String
-  sortOrder Int    @default(0)
+  sortOrder Int    @default(0) @map("sort_order")
+
+  rootCategories RootCategory[]
 
   @@map("grades")
 }
 
-model Category {
-  id        Int    @id @default(autoincrement())
-  /// @zod.string.min(1).toLowerCase()
-  slug      String
-  /// @zod.string.min(1)
-  title     String
-  sortOrder Int    @default(0) @map("sort_order")
+model RootCategory {
+  subjectId Int     @map("subject_id")
+  subject   Subject @relation(fields: [subjectId], references: [id])
 
-  parentId Int?       @map("parent_id")
-  parent   Category?  @relation("CategoryLinks", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryLinks")
+  gradeId Int   @map("grade_id")
+  grade   Grade @relation(fields: [gradeId], references: [id])
 
-  contents Content[]
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
 
-  @@map("categories")
+  @@id([subjectId, gradeId, categoryId])
+  @@map("root_categories")
 }
 
 model Content {

@@ -3,39 +3,39 @@ const prisma = new PrismaClient();
 async function main() {
 	await prisma.$transaction(async (prisma) => {
 		const subjects = [
-			{ id: 'math', title: '数学' },
-			{ id: 'english', title: '英語' },
-			{ id: 'japanese', title: '国語' },
-			{ id: 'science', title: '理科' },
-			{ id: 'social_studies', title: '社会' },
-			{ id: 'arithmetic', title: '算数' }
+			{ slug: 'math', title: '数学' },
+			{ slug: 'english', title: '英語' },
+			{ slug: 'japanese', title: '国語' },
+			{ slug: 'science', title: '理科' },
+			{ slug: 'social_studies', title: '社会' },
+			{ slug: 'arithmetic', title: '算数' }
 		] satisfies Partial<Subject>[];
 		for (const [i, subject] of subjects.entries()) {
 			await prisma.subject.upsert({
-				where: { id: subject.id },
+				where: { slug: subject.slug },
 				update: {},
 				create: { ...subject, sortOrder: i + 1 }
 			});
 		}
 
 		const grades = [
-			{ id: 'e1', title: '小1' },
-			{ id: 'e2', title: '小2' },
-			{ id: 'e3', title: '小3' },
-			{ id: 'e4', title: '小4' },
-			{ id: 'e5', title: '小5' },
-			{ id: 'e6', title: '小6' },
-			{ id: 'j1', title: '中1' },
-			{ id: 'j2', title: '中2' },
-			{ id: 'j3', title: '中3' },
-			{ id: 'h1', title: '高1' },
-			{ id: 'h2', title: '高2' },
-			{ id: 'h3', title: '高3' }
+			{ slug: 'e1', title: '小1' },
+			{ slug: 'e2', title: '小2' },
+			{ slug: 'e3', title: '小3' },
+			{ slug: 'e4', title: '小4' },
+			{ slug: 'e5', title: '小5' },
+			{ slug: 'e6', title: '小6' },
+			{ slug: 'j1', title: '中1' },
+			{ slug: 'j2', title: '中2' },
+			{ slug: 'j3', title: '中3' },
+			{ slug: 'h1', title: '高1' },
+			{ slug: 'h2', title: '高2' },
+			{ slug: 'h3', title: '高3' }
 		] satisfies Partial<Grade>[];
 
 		for (const [i, grade] of grades.entries()) {
 			await prisma.grade.upsert({
-				where: { id: grade.id },
+				where: { slug: grade.slug },
 				update: {},
 				create: { ...grade, sortOrder: i + 1 }
 			});
