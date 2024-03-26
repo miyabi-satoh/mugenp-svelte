@@ -7,7 +7,7 @@
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"customizations": {
 		"vscode": {
-			"extensions": ["svelte.svelte-vscode", "Prisma.prisma"]
+			"extensions": ["svelte.svelte-vscode", "Prisma.prisma", "bradlc.vscode-tailwindcss"]
 		}
 	},
 

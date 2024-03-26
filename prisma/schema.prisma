@@ -19,6 +19,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id             String   @id
+  username       String   @unique
+  hashedPassword String   @map("hashed_password")
+  role           UserRole @default(USER)
+
+  sessions Session[]
+
+  @@map("auth_users")
+}
+
+model Session {
+  id        String   @id
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@map("auth_sessions")
+}
+
 model Category {
   id        Int    @id @default(autoincrement())
   slug      String

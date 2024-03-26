@@ -6,13 +6,13 @@ import { error } from '@sveltejs/kit';
 export const load = (async ({ params }) => {
 	const { subjectId, gradeId } = params;
 	const subject = await prisma.subject.findUnique({
-		where: { id: subjectId }
+		where: { slug: subjectId }
 	});
 	if (!subject) error(404, 'Not found');
 
 	if (gradeId) {
 		const grade = await prisma.grade.findUnique({
-			where: { id: gradeId }
+			where: { slug: gradeId }
 		});
 		if (!grade) error(404, 'Not found');
 	}
