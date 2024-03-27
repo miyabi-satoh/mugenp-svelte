@@ -30,8 +30,11 @@
 	}[] = [];
 	page.subscribe((page) => {
 		const { pathname } = page.url;
-		if (pathname.match(/^\/mgp-admin\/dashboard(\/|$)/)) {
-			menuItems = [{ href: '/mgp-admin/dashboard', label: 'Dashboard' }];
+		if (pathname.match(/^\/mgp-admin\/.+(\/|$)/)) {
+			menuItems = [
+				{ href: '/mgp-admin/dashboard', label: 'Dashboard' },
+				{ href: '/mgp-admin/categories', label: 'Categories' }
+			];
 		} else {
 			menuItems = [];
 			// console.log('pathname', pathname);

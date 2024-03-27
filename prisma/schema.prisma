@@ -92,7 +92,7 @@ model RootCategory {
   categoryId Int      @map("category_id")
   category   Category @relation(fields: [categoryId], references: [id])
 
-  @@id([subjectId, gradeId, categoryId])
+  @@id([subjectId, gradeId])
   @@map("root_categories")
 }
 
