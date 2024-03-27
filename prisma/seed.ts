@@ -1,4 +1,5 @@
 import { Grade, PrismaClient, Subject } from '@prisma/client';
+
 const prisma = new PrismaClient();
 async function main() {
 	await prisma.$transaction(async (prisma) => {

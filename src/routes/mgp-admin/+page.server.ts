@@ -1,13 +1,13 @@
-import { ADMIN_PASSWORD, ADMIN_USERNAME } from '$env/static/private';
-import { prisma } from '$lib/server/prisma';
-import { generateId } from 'lucia';
-import type { Actions, PageServerLoad } from './$types';
-import { Argon2id } from 'oslo/password';
 import { fail, redirect } from '@sveltejs/kit';
-import { z } from 'zod';
+import { generateId } from 'lucia';
+import { Argon2id } from 'oslo/password';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { z } from 'zod';
+import { ADMIN_PASSWORD, ADMIN_USERNAME } from '$env/static/private';
 import { lucia } from '$lib/server/auth';
+import { prisma } from '$lib/server/prisma';
+import type { Actions, PageServerLoad } from './$types';
 
 const schema = z.object({
 	username: z.string().min(1),

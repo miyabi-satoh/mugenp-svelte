@@ -1,7 +1,7 @@
-import type { MetaTagsProps } from 'svelte-meta-tags';
-import type { PageServerLoad } from './$types';
-import { prisma } from '$lib/server/prisma';
 import { error } from '@sveltejs/kit';
+import type { MetaTagsProps } from 'svelte-meta-tags';
+import { prisma } from '$lib/server/prisma';
+import type { PageServerLoad } from './$types';
 
 export const load = (async ({ params }) => {
 	const { subjectId, gradeId } = params;

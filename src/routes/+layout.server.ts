@@ -1,7 +1,7 @@
+import type { MetaTagsProps } from 'svelte-meta-tags';
 import { assets } from '$app/paths';
 import { APP_DESCRIPTION, APP_TITLE } from '$env/static/private';
 import type { LayoutServerLoad } from './$types';
-import type { MetaTagsProps } from 'svelte-meta-tags';
 
 export const load = (async ({ url }) => {
 	const href = new URL(url.pathname, url.origin).href;

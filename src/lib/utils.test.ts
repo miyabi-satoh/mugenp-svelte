@@ -1,6 +1,6 @@
+import Fraction from 'fraction.js';
 import { describe, expect, it } from 'vitest';
 import { chooseRandom, randomInt, Latex } from './utils';
-import Fraction from 'fraction.js';
 
 describe('utils モジュールのテスト', () => {
 	describe('chooseRandom 関数', () => {
