@@ -1,0 +1,20 @@
+{
+	"name": "${localWorkspaceFolderBasename}",
+	"dockerComposeFile": "compose.yml",
+	"service": "app",
+	"workspaceFolder": "/app",
+
+	// "features": {},
+
+	"forwardPorts": [5432],
+
+	// "postCreateCommand": "uname -a",
+
+	"remoteUser": "node",
+
+	"customizations": {
+		"vscode": {
+			"extensions": ["ms-azuretools.vscode-docker"]
+		}
+	}
+}
